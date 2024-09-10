@@ -38,10 +38,10 @@ def start_message(message):
 def handle_response(message):
     if message.text == STUDENT_BUTTON_TEXT:
         USER_STATES[message.chat.id] = 'awaiting_access_code'
-        bot.send_message(message.chat.id, "Введите код доступа ученика:")
+        bot.send_message(message.chat.id, "Введите логин данный учителем:")
     elif message.text == TEACHER_BUTTON_TEXT:
         USER_STATES[message.chat.id] = 'awaiting_login'
-        bot.send_message(message.chat.id, "Введите логин:")
+        bot.send_message(message.chat.id, "Введите логин и пароль данный разработчиками:")
 
 @bot.message_handler(func=lambda message: USER_STATES.get(message.chat.id) == 'awaiting_access_code')
 def get_access_code(message):
@@ -50,7 +50,7 @@ def get_access_code(message):
     if check_login_credentials(access_code, DEFAULT_PASSWORD_HASH):
         bot.send_message(message.chat.id, f"[Нажмите сюда чтобы перейти в Квантомат]({BASE_URL}/auto_auth?login={access_code}&hashed_password={DEFAULT_PASSWORD_HASH})", parse_mode="Markdown")
     else:
-        bot.send_message(message.chat.id, "Неверный код доступа. Нажмите чтобы перезапустить бота -> /start")
+        bot.send_message(message.chat.id, "Неверный логин. Нажмите чтобы перезапустить бота -> /start")
 
     del USER_STATES[message.chat.id]  # Clear the state
 
